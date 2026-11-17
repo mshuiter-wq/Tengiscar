@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #car1 {
+            width: 300px;
+            position: absolute;
+            margin-left: 0px;
+            margin-top: 5px;
+        }
+
+        #car2 {
+            width: 280px;
+            position: absolute;
+            margin-left: 10px;
+            margin-top: 160px;
+        }
+    </style>
+</head>
+<body style="margin: 0 auto;">
+    <div style="width: 100%; background-image: url(zam.jpg); height: 400px">
+        <img id="car1" src="car1.png" />
+        <img id="car2" src="car2.png" />
+    </div>
+    <input type="text" id="command" onkeypress="uraldah(event)" />
+</body>
+<script>
+    let car1 = document.getElementById("car1");
+    let car2 = document.getElementById("car2");
+    let go1 = 0;
+    let go2 = 10;
+    function uraldah(event) {
+        if(event.key == "d") {
+            go1 += 50;
+            car1.style.marginLeft = go1 + "px";
+        } else if (event.key == "f") {
+            go2 += 50;
+            car2.style.marginLeft = go2 + "px";
+        }
+        if(go1 > 1450) {
+            alert("Цагдаагийн машин хожлоо");
+            car1.style.marginLeft = "0px";
+            car2.style.marginLeft = "-20px";
+            go1 = 0;
+            go2 = -20;
+        } else if (go2 > 1450) {
+            alert("Шар машин хожлоо");
+            car1.style.marginLeft = "0px";
+            car2.style.marginLeft = "-20px";
+            go1 = 0;
+            go2 = -20;
+        }
+    }
+</script>
+</html>
