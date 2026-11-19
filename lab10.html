@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Breakout</title>
+<style>
+    canvas { border: 1px solid black; display: block; margin: 20px auto; }
+</style>
+</head>
+<body>
+<canvas id="canvas" width="500" height="500"></canvas>
+
+<script>
+let canvas = document.getElementById("canvas");
+let ctx = canvas.getContext("2d");
+
+// Durvuljin 
+class Durvuljin {
+    constructor(x, y, orgon, ondor) {
+        this.x = x;
+        this.y = y;
+        this.orgon = orgon;
+        this.ondor = ondor;
+    }
+    zurah() {
+        ctx.beginPath();
+        ctx.rect(this.x, this.y, this.orgon, this.ondor);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+    }
+}
+
+// Tsohiur 
+class Tsohiur extends Durvuljin {
+    constructor(x, y, orgon, ondor) {
+        super(x, y, orgon, ondor);
+    }
+    hodloh(x) {
+        ctx.clearRect(this.x, this.y, this.orgon, this.ondor);
+        this.x = this.x + x;
+        this.zurah();
+    }
+}
+let tsohiur = new Tsohiur(200, 400, 80, 10);
+
+// Bombog
+function Bombog(x, y, radius) {
+    this.x = x;
+    this.y = y;
+    this.radius = radius;
+    this.zurah = function () {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * 3.14);
+        ctx.fillStyle = "#0095DD";
+        ctx.fill();
+        ctx.closePath();
+    }
+    this.chiglelX = 1;
+    this.chiglelY = -1;
+    this.hodloh = function () {
+        if (this.x + this.chiglelX > 500) this.chiglelX = -this.chiglelX;
+        if (this.y + this.chiglelY < 0) this.chiglelY = -this.chiglelY;
+        if (this.x + this.chiglelX < 0) this.chiglelX = -this.chiglelX;
+        if (this.y + this.chiglelY > 400) this.chiglelY = -this.chiglelY;
+
+        this.x = this.x + this.chiglelX;
+        this.y = this.y + this.chiglelY;
+        this.zurah();
+    }
+}
+let bombog = new Bombog(250, 390, 10);
+
+// Onoo
+let onoo = {
+    onoo: 0,
+    zurah: function () {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText("Onoo: " + this.onoo, 8, 20);
+    }
+};
+
+// Ami
+let ami = {
+    ami: 3,
+    zurah: function () {
+        ctx.font = "16px Arial";
+        ctx.fillStyle = "#0095DD";
+        ctx.fillText("Ami: " + this.ami, 430, 20);
+    }
+};
+
+// Saaduud
+let saaduud = [];
+for (let x = 30; x < 500; x += 80) {
+    for (let y = 30; y < 190; y += 40) {
+        let saad = new Durvuljin(x, y, 60, 20);
+        saaduud.push(saad);
+    }
+}
+//gantshan saad
+let nemelt = new Durvuljin(500, 190, 60, 20);
+saaduud.push(nemelt);
+
+console.log(saaduud);
+
+function zurah() {
+    ctx.clearRect(0, 0, 500, 500);
+    saaduud.forEach((saad, index) => {
+        if (bombog.x > saad.x && bombog.x < saad.x + saad.orgon
+            && bombog.y > saad.y && bombog.y < saad.y + saad.ondor) {
+            saaduud.splice(index, 1);
+            onoo.onoo++;
+        }
+        else saad.zurah();
+    });
+    bombog.hodloh();
+    tsohiur.hodloh(0);
+    onoo.zurah();
+    ami.zurah();
+}
+
+let timer = setInterval(zurah, 10);
+
+// Keydown event
+document.addEventListener("keydown", keyDownHandler);
+function keyDownHandler(e) {
+    if (e.keyCode == 39) {
+        tsohiur.hodloh(5);
+    }
+    else if (e.keyCode == 37) {
+        tsohiur.hodloh(-5);
+    }
+}
+
+</script>
+</body>
+</html>
